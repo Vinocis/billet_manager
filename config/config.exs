@@ -17,6 +17,11 @@ config :billet_manager, BilletManagerWeb.Endpoint,
   pubsub_server: BilletManager.PubSub,
   live_view: [signing_salt: "ICdDPixD"]
 
+config :money,
+  default_currency: :BRL,
+  separator: ".",
+  delimiter: ","
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
