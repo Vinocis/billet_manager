@@ -1,11 +1,14 @@
 defmodule BilletManager.Billets.Models.Billet do
   use Ecto.Schema
-  import Ecto.Changeset
 
   alias BilletManager.Billets.Models.Customer
 
+  import Ecto.Changeset
+
   @statuses ~w(
     opened
+    paid
+    expired
   )a
 
   @required_fields ~w(
@@ -17,11 +20,11 @@ defmodule BilletManager.Billets.Models.Billet do
 
   schema "billets" do
     field :code, :string
-    field :value, :integer
+    field :value, Money.Ecto.Amount.Type
     field :status, Ecto.Enum, values: @statuses, default: :opened
     field :expire_on, :date
 
-    belongs_to :customer, Customer, foreign_key: :customer_id
+    belongs_to :customer, Customer
 
     timestamps()
   end
@@ -31,18 +34,8 @@ defmodule BilletManager.Billets.Models.Billet do
     |> cast(params, @required_fields)
     |> validate_required(@required_fields)
     |> validate_expire_time()
-    |> validate_billet_value()
+    |> validate_number(:value, greater_than: 0)
     |> unique_constraint(:code)
-  end
-
-  defp validate_billet_value(changeset) do
-    billet_value = get_change(changeset, :created_at)
-
-    if billet_value > 0 do
-      changeset
-    else
-      add_error(changeset, :value, "billet value must be greater than zero")
-    end
   end
 
   defp validate_expire_time(changeset) do

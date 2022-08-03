@@ -1,8 +1,9 @@
 defmodule BilletManager.Billets.Models.Customer do
   use Ecto.Schema
-  import Ecto.Changeset
 
   alias BilletManager.Billets.Models.Billet
+
+  import Ecto.Changeset
 
   @required_fields ~w(
     name
