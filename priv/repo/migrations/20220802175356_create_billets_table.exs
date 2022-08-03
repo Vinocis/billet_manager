@@ -14,5 +14,6 @@ defmodule BilletManager.Repo.Migrations.CreateBilletsTable do
     end
 
     create unique_index(:billets, [:code])
+    create index(:billets, [:status])
   end
 end

@@ -10,5 +10,6 @@ defmodule BilletManager.Repo.Migrations.CreateCustomerTable do
     end
 
     create unique_index(:customers, [:cpf])
+    create index(:customers, [:name])
   end
 end
