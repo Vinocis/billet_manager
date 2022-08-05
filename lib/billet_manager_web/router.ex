@@ -5,8 +5,12 @@ defmodule BilletManagerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BilletManagerWeb do
+  scope "/api/v1", BilletManagerWeb.Controllers.V1 do
     pipe_through :api
+
+    post "/bank-billets", BilletsController, :create
+    get "/bank-billets/:cpf", BilletsController, :index
+    post "/bank-billets/:billet_code/pay", BilletsController, :handle_payments
   end
 
   # Enables LiveDashboard only for development
