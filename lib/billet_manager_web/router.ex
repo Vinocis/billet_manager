@@ -8,9 +8,18 @@ defmodule BilletManagerWeb.Router do
   scope "/api/v1", BilletManagerWeb.Controllers.V1 do
     pipe_through :api
 
-    post "/bank-billets", BilletsController, :create
-    get "/bank-billets/:cpf", BilletsController, :index
-    post "/bank-billets/:billet_code/pay", BilletsController, :handle_payments
+    scope "/customers" do
+      get "/", CustomerController, :index
+      post "/", CustomerController, :create
+      put "/:cpf", CustomerController, :update
+
+      get "/:cpf/bank-billets", BilletController, :index
+      post "/:cpf/bank-billets", BilletController, :create
+    end
+
+    scope "/bank-billets" do
+      post "/:billet_code/pay", BilletController, :handle_payment
+    end
   end
 
   # Enables LiveDashboard only for development
