@@ -17,19 +17,25 @@ defmodule BilletManagerWeb.Controllers.V1.BilletControllerTest do
       conn = post(conn, "/api/v1/customers/111.444.777-35/bank-billets", body)
 
       assert response(conn, 200)
-      assert conn.resp_body == "Billet created!"
     end
 
-    test "fails to create with invalid body", %{conn: conn} do
+    test "fails to create with invalid body when customer exists", %{conn: conn} do
+      customer = %{cpf: "111.444.777-35", name: "Jhon Doe"}
+      Db.insert_customer(customer)
+
       body = %{
         "billet_code" => "cod14135",
-        "billet_value" => nil,
         "billet_expire_on" => "2022-08-03T14:08:48-03:00"
       }
 
       conn = post(conn, "/api/v1/customers/111.444.777-35/bank-billets", body)
 
-      assert response(conn, 400)
+      assert response(conn, 422)
+      errors = json_response(conn, 422)["errors"]
+
+      assert errors == %{
+               "detail" => %{"value" => ["can't be blank"]}
+             }
     end
   end
 end

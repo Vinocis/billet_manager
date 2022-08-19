@@ -4,16 +4,16 @@ defmodule BilletManager.InstallmentsBasis.DbTest do
   alias BilletManager.InstallmentsBasis.Db
 
   describe "get_customer_by_params/1" do
-    test "returns a empty list if entity doesn't exist" do
-      assert [] == Db.get_customer_by_params([])
+    test "returns nil if customer doesn't exist" do
+      assert nil == Db.get_customer_by_params([])
     end
 
-    test "returns a list with entities if exists" do
+    test "returns the customer when exists" do
       customer = %{cpf: "111.444.777-35", name: "Jhon Doe"}
 
       Db.insert_customer(customer)
 
-      [inserted_customer] = Db.get_customer_by_params(cpf: customer.cpf)
+      inserted_customer = Db.get_customer_by_params(cpf: customer.cpf)
 
       assert inserted_customer.cpf == customer.cpf
       assert inserted_customer.name == customer.name
@@ -27,15 +27,18 @@ defmodule BilletManager.InstallmentsBasis.DbTest do
 
     test "returns a list with entities if exists" do
       customer = %{cpf: "111.444.777-35", name: "Jhon Doe"}
+      Db.insert_customer(customer)
+
+      customer = Db.get_customer_by_params(cpf: "111.444.777-35")
 
       billet = %{
+        customer_id: customer.id,
         code: "11111.11111 11111.11111",
         value: 250,
         expire_on: ~N[2022-10-03 14:08:48]
       }
 
-      Db.insert_customer(customer)
-      Db.insert_billet(billet, customer.cpf)
+      Db.insert_billet(billet)
 
       [inserted_billet] = Db.get_billets_by_params(code: billet.code)
 
@@ -78,16 +81,18 @@ defmodule BilletManager.InstallmentsBasis.DbTest do
   describe "insert_billet/1" do
     test "insert with valid params when customer exists" do
       customer = %{cpf: "111.444.777-35", name: "Jhon Doe"}
+      Db.insert_customer(customer)
+
+      customer = Db.get_customer_by_params(cpf: "111.444.777-35")
 
       billet = %{
+        customer_id: customer.id,
         code: "11111.11111 11111.11111",
         value: 250,
         expire_on: ~N[2022-10-03 14:08:48]
       }
 
-      Db.insert_customer(customer)
-
-      assert {:ok, _} = Db.insert_billet(billet, customer.cpf)
+      assert {:ok, _} = Db.insert_billet(billet)
     end
 
     test "fails with valid params but customer doesn't exists" do
@@ -97,8 +102,8 @@ defmodule BilletManager.InstallmentsBasis.DbTest do
         expire_on: ~N[2022-10-03 14:08:48]
       }
 
-      assert {:error, error} = Db.insert_billet(billet, "111.444.777-35")
-      assert error == "customer not found"
+      assert {:error, error} = Db.insert_billet(billet)
+      assert error == :customer_not_found
     end
   end
 end
