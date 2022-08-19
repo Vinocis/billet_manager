@@ -1,9 +1,9 @@
-defmodule BilletManager.InstallmentsBasis.Adapters.Pagination do
+defmodule BilletManager.Common.Adapters.Pagination do
   @moduledoc """
   Adapter responsável por converter campos usamos no módulo `Cobranca.Common.Schemas.Pagination`.
   """
 
-  alias BilletManager.InstallmentsBasis.Schemas.Pagination, as: PaginationSchema
+  alias BilletManager.Common.Schemas.Pagination, as: PaginationSchema
 
   @type changeset :: Ecto.Changeset.t()
   @type pagination_schema :: PaginationSchema.t()

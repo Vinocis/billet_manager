@@ -1,4 +1,4 @@
-defmodule BilletManager.InstallmentsBasis.Pagination do
+defmodule BilletManager.Common.Pagination do
   @moduledoc """
   Modulo para paginação de resultados.
   """

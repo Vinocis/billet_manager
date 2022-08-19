@@ -1,4 +1,4 @@
-defmodule BilletManager.InstallmentsBasis.Schemas.Pagination do
+defmodule BilletManager.Common.Schemas.Pagination do
   use Ecto.Schema
 
   import Ecto.Changeset
