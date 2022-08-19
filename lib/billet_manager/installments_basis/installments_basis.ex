@@ -16,6 +16,10 @@ defmodule BilletManager.InstallmentsBasis do
   defdelegate create_billet(attrs), to: Db, as: :insert_billet
   defdelegate create_customer(attrs), to: Db, as: :insert_customer
 
+  @doc """
+  Search a customer with the given cpf and updates his data
+  with the given attrs.
+  """
   @spec update_customer(map, binary) ::
           {:ok, Customer.t()} | {:error, Ecto.Changeset.t()} | {:error, atom}
   def update_customer(attrs, customer_cpf) do
@@ -28,6 +32,11 @@ defmodule BilletManager.InstallmentsBasis do
     end
   end
 
+  @doc """
+  Converts the pagination data to a keyword list and 
+  then pass it to the Db module function that build the
+  pagination map.
+  """
   @spec list_customers_with_pagination(map) :: map
   def list_customers_with_pagination(pagination_data) do
     pagination_data =
