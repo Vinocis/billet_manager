@@ -2,20 +2,30 @@ defmodule BilletManagerWeb.Controllers.V1.BilletController do
   use BilletManagerWeb, :controller
 
   alias BilletManager.InstallmentsBasis
-  alias BilletManager.InstallmentsBasis.Db
+  alias BilletManagerWeb.Dto.V1.CreateBillet
+
+  action_fallback BilletManagerWeb.FallbackController
 
   def create(conn, %{"cpf" => cpf} = params) do
-    case InstallmentsBasis.create_billet(params, cpf) do
-      {:ok, _} ->
-        send_resp(conn, 200, "Billet created!")
+    with %{id: id} <-
+           InstallmentsBasis.get_customer_by_params(cpf: cpf),
+         {:ok, _billet} <- create_billet(params, id) do
+      render_response(:empty, conn)
+    end
+  end
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        errors = Db.changeset_errors_to_string(changeset)
+  defp create_billet(params, id) do
+    result =
+      params
+      |> Map.put("customer_id", id)
+      |> CreateBillet.changeset()
 
-        send_resp(conn, 400, "#{errors}")
+    case result do
+      {:ok, attrs} ->
+        InstallmentsBasis.create_billet(attrs)
 
-      {:error, error} ->
-        send_resp(conn, 400, error)
+      {:error, changeset} ->
+        {:error, changeset}
     end
   end
 end
