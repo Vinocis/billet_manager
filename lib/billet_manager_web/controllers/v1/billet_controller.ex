@@ -1,4 +1,7 @@
 defmodule BilletManagerWeb.Controllers.V1.BilletController do
+  @moduledoc """
+  Controller for create bank billets
+  """
   use BilletManagerWeb, :controller
 
   alias BilletManager.InstallmentsBasis
@@ -6,6 +9,10 @@ defmodule BilletManagerWeb.Controllers.V1.BilletController do
 
   action_fallback BilletManagerWeb.FallbackController
 
+  @doc """
+  Fetches the customer with the given cpf, if exists associates the
+  given billet with the fecthed customer
+  """
   def create(conn, %{"cpf" => cpf} = params) do
     with %{id: id} <-
            InstallmentsBasis.get_customer_by_params(cpf: cpf),

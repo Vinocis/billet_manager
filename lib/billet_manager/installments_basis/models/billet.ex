@@ -1,4 +1,5 @@
 defmodule BilletManager.InstallmentsBasis.Models.Billet do
+  @moduledoc false
   use Ecto.Schema
 
   alias BilletManager.InstallmentsBasis.Models.Customer
@@ -33,7 +34,7 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
     model
     |> cast(params, @required_fields)
     |> validate_required(@required_fields)
-    |> validate_expire_time(model)
+    |> validate_expire_time()
     |> validate_billet_value()
     |> unique_constraint(:code)
   end
@@ -52,21 +53,17 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
     end
   end
 
-  defp validate_expire_time(changeset, model) do
-    expire_changes = get_change(changeset, :expire_on)
-    expire_model = model.expire_on
-
+  defp validate_expire_time(%{changes: %{expire_on: expire_on}} = changeset) do
     cond do
-      is_nil(expire_changes) && is_expire_time_valid?(expire_model) ->
-        changeset
-
-      not is_nil(expire_changes) && is_expire_time_valid?(expire_changes) ->
+      is_expire_time_valid?(expire_on) ->
         changeset
 
       true ->
         add_error(changeset, :expire_on, "expiration time must be greater than :inserted_at")
     end
   end
+
+  defp validate_expire_time(changeset), do: changeset
 
   defp is_expire_time_valid?(expire_time) do
     NaiveDateTime.diff(expire_time, NaiveDateTime.utc_now()) > 0

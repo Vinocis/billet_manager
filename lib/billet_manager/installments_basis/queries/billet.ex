@@ -3,7 +3,7 @@ defmodule BilletManager.InstallmentsBasis.Queries.Billet do
 
   import Ecto.Query
 
-  def get_billets(params) do
+  def get_billets_by(params) do
     from b in Billet,
       where: ^params
   end

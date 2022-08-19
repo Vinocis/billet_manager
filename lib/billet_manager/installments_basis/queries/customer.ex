@@ -3,12 +3,12 @@ defmodule BilletManager.InstallmentsBasis.Queries.Customer do
 
   import Ecto.Query
 
-  def get_customers(params) do
+  def get_customers_by(params) do
     from c in Customer,
       where: ^params
   end
 
-  def get_all_customers do
+  def get_customers do
     from c in Customer,
       select: c
   end

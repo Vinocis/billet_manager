@@ -9,16 +9,16 @@ defmodule BilletManagerWeb.Router do
     pipe_through :api
 
     scope "/customers" do
-      get "/", CustomerController, :index
-      post "/", CustomerController, :create
-      put "/:cpf", CustomerController, :update
+      resources "/", CustomerController,
+        param: "cpf",
+        as: "installments_customer",
+        only: [:index, :create, :update]
 
-      get "/:cpf/bank-billets", BilletController, :index
-      post "/:cpf/bank-billets", BilletController, :create
+      resources "/:cpf/bank-billets", BilletController, only: [:index, :create]
     end
 
     scope "/bank-billets" do
-      post "/:billet_code/pay", BilletController, :handle_payment
+      post "/:billet_code/pay", BilletController, :handle_payments
     end
   end
 

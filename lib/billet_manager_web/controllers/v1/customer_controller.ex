@@ -1,4 +1,7 @@
 defmodule BilletManagerWeb.Controllers.V1.CustomerController do
+  @moduledoc """
+  Controller that handle customer associated requests
+  """
   use BilletManagerWeb, :controller
 
   alias BilletManager.InstallmentsBasis
@@ -7,6 +10,9 @@ defmodule BilletManagerWeb.Controllers.V1.CustomerController do
 
   action_fallback BilletManagerWeb.FallbackController
 
+  @doc """
+  List customers with pagination
+  """
   def index(conn, params) do
     with {:ok, pagination_data} <-
            PaginationAdapter.params_to_internal_pagination(params),
