@@ -4,6 +4,16 @@ defmodule BilletManager do
   and business logic.
   """
 
+  def model do
+    quote do
+      use Ecto.Schema
+
+      import Ecto.Changeset
+
+      @self __MODULE__
+    end
+  end
+
   def repo do
     quote do
       @behaviour BilletManager.Repo

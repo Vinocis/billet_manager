@@ -1,6 +1,7 @@
 defmodule BilletManager.InstallmentsBasis.Models.Customer do
   @moduledoc false
-  use Ecto.Schema
+
+  use BilletManager, :model
 
   alias BilletManager.InstallmentsBasis.Models.Billet
 

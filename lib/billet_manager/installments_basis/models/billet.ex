@@ -1,6 +1,7 @@
 defmodule BilletManager.InstallmentsBasis.Models.Billet do
   @moduledoc false
-  use Ecto.Schema
+
+  use BilletManager, :model
 
   alias BilletManager.InstallmentsBasis.Models.Customer
 
@@ -13,6 +14,7 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
   )a
 
   @required_fields ~w(
+    customer_id
     code
     value
     status
@@ -23,7 +25,7 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
     field :code, :string
     field :value, Money.Ecto.Amount.Type
     field :status, Ecto.Enum, values: @statuses, default: :opened
-    field :expire_on, :naive_datetime
+    field :expire_on, :date
 
     belongs_to :customer, Customer
 
@@ -69,7 +71,7 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
 
   defp is_expire_time_valid?(expire_time) do
     expire_time
-    |> NaiveDateTime.diff(NaiveDateTime.utc_now())
+    |> Date.diff(Date.utc_today())
     |> Kernel.>(0)
   end
 end
