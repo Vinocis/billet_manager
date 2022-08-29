@@ -5,12 +5,13 @@ defmodule BilletManagerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/v1" do
-    pipe_through :api
+  if Mix.env() in [:dev, :test] do
+    scope "/api/v1" do
+      pipe_through :api
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BilletManagerWeb.Schema
-
-    forward "/", Absinthe.Plug, schema: BilletManagerWeb.Schema
+      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BilletManagerWeb.Schema
+      forward "/", Absinthe.Plug, schema: BilletManagerWeb.PublicSchema
+    end
   end
 
   # Enables LiveDashboard only for development

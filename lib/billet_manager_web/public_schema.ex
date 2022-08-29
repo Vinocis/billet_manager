@@ -1,22 +1,26 @@
-defmodule BilletManagerWeb.Schema do
+defmodule BilletManagerWeb.PublicSchema do
   use Absinthe.Schema
 
   alias BilletManagerWeb.Middleware.ErrorHandler
 
   # types
+  import_types(Absinthe.Type.Custom)
   import_types(BilletManagerWeb.Schemas.Customer.Type)
+  import_types(BilletManagerWeb.Schemas.Billet.Type)
 
   # queries
   import_types(BilletManagerWeb.Schemas.Customer.Query)
 
   # mutations
   import_types(BilletManagerWeb.Schemas.Customer.Mutation)
+  import_types(BilletManagerWeb.Schemas.Billet.Mutation)
 
   query do
     import_fields(:customers_query)
   end
 
   mutation do
+    import_fields(:create_billet_mutation)
     import_fields(:create_customer_mutation)
     import_fields(:update_customer_mutation)
   end
