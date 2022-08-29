@@ -7,7 +7,6 @@ defmodule BilletManager.Repo do
 
   alias BilletManager.InstallmentsBasis.Models.Billet
   alias BilletManager.InstallmentsBasis.Models.Customer
-  alias Ecto.Repo
 
   @type changeset :: Ecto.Changeset.t()
   @type query :: Ecto.Query.t()
