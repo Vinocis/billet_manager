@@ -39,33 +39,37 @@ defmodule BilletManager.InstallmentsBasis.Models.Billet do
     |> unique_constraint(:code)
   end
 
-  defp validate_billet_value(changeset) do
-    case get_change(changeset, :value) do
-      %Money{amount: amount} ->
-        if amount > 0 do
-          changeset
-        else
-          add_error(changeset, :value, "billet value must be greater than 0")
-        end
-
-      _ ->
-        changeset
+  defp validate_billet_value(%{changes: %{value: %Money{amount: amount}}} = changeset) do
+    if amount > 0 do
+      changeset
+    else
+      add_error(
+        changeset,
+        :value,
+        "billet value must be greater than 0"
+      )
     end
   end
 
-  defp validate_expire_time(%{changes: %{expire_on: expire_on}} = changeset) do
-    cond do
-      is_expire_time_valid?(expire_on) ->
-        changeset
+  defp validate_billet_value(changeset), do: changeset
 
-      true ->
-        add_error(changeset, :expire_on, "expiration time must be greater than :inserted_at")
+  defp validate_expire_time(%{changes: %{expire_on: expire_on}} = changeset) do
+    if is_expire_time_valid?(expire_on) do
+      changeset
+    else
+      add_error(
+        changeset,
+        :expire_on,
+        "expiration time must be greater than :inserted_at"
+      )
     end
   end
 
   defp validate_expire_time(changeset), do: changeset
 
   defp is_expire_time_valid?(expire_time) do
-    NaiveDateTime.diff(expire_time, NaiveDateTime.utc_now()) > 0
+    expire_time
+    |> NaiveDateTime.diff(NaiveDateTime.utc_now())
+    |> Kernel.>(0)
   end
 end
