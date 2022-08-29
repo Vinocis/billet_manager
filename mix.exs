@@ -45,7 +45,9 @@ defmodule BilletManager.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:brcpfcnpj, "~> 1.0.0"},
-      {:money, "~> 1.9"}
+      {:money, "~> 1.9"},
+      {:absinthe, "~> 1.5"},
+      {:absinthe_plug, "~> 1.5"}
     ]
   end
 
