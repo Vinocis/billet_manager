@@ -5,21 +5,12 @@ defmodule BilletManagerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api/v1", BilletManagerWeb.Controllers.V1 do
+  scope "/api/v1" do
     pipe_through :api
 
-    scope "/customers" do
-      resources "/", CustomerController,
-        param: "cpf",
-        as: "installments_customer",
-        only: [:index, :create, :update]
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BilletManagerWeb.Schema
 
-      resources "/:cpf/bank-billets", BilletController, only: [:index, :create]
-    end
-
-    scope "/bank-billets" do
-      post "/:billet_code/pay", BilletController, :handle_payments
-    end
+    forward "/", Absinthe.Plug, schema: BilletManagerWeb.Schema
   end
 
   # Enables LiveDashboard only for development
