@@ -1,6 +1,6 @@
 defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   @moduledoc """
-  Service that list customers
+  Responsible for get users from database
   """
   use BilletManager, :application_service
 
@@ -11,7 +11,7 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   @type changeset :: Ecto.Changeset.t()
 
   @doc """
-  List customers
+  Returns a list customers
   """
   @spec process() :: {:ok, customer} | {:error, changeset}
   def process() do

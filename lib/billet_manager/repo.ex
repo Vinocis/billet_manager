@@ -1,5 +1,10 @@
 defmodule BilletManager.Repo do
-  @moduledoc false
+  @moduledoc """
+  Repo behaviour
+
+  Implements a defalt behaviour to be followed in the
+  repo contexts
+  """
 
   use Ecto.Repo,
     otp_app: :billet_manager,
@@ -36,16 +41,15 @@ defmodule BilletManager.Repo do
 
   @spec fetch_by(module | query, keyword) :: {:ok, struct} | {:error, :not_found}
   def fetch_by(source, params) do
-    error =
-      case source do
-        Billet -> "Billet not found"
-        Customer -> "Customer not found"
-        _ -> "Not found"
-      end
+    error = normalize_fetch_error(source)
 
     case BilletManager.Repo.get_by(source, params) do
       nil -> {:error, error}
       model -> {:ok, model}
     end
   end
+
+  def normalize_fetch_error(Billet), do: "Billet not found"
+  def normalize_fetch_error(Customer), do: "Customer not found"
+  def normalize_fetch_error(source), do: "Not found"
 end

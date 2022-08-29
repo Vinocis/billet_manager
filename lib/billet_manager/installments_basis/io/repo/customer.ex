@@ -1,19 +1,16 @@
 defmodule BilletManager.InstallmentsBasis.IO.Repo.Customer do
   @moduledoc """
-  Module that interacts with the billets table
+  Module that interacts with the customers table
   """
 
   use BilletManager, :repo
 
   alias BilletManager.InstallmentsBasis.Models.Customer
 
-  @type customer :: Customer.t()
-
   @doc """
   Fetch all customers
   """
   @impl true
-  @spec all() :: list(customer)
   def all do
     Repo.all(Customer)
   end
@@ -22,7 +19,6 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.Customer do
   Create a new customer
   """
   @impl true
-  @spec insert(map) :: {:ok, customer} | {:error, changeset}
   def insert(attrs) do
     %Customer{}
     |> Customer.changeset(attrs)
@@ -33,7 +29,6 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.Customer do
   Update a customer
   """
   @impl true
-  @spec update(customer, map) :: {:ok, customer} | {:error, changeset}
   def update(attrs, customer) do
     customer
     |> Customer.changeset(attrs)
@@ -44,7 +39,6 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.Customer do
   Fetch customers by params
   """
   @impl true
-  @spec fetch_by(keyword) :: {:ok, customer} | {:error, binary}
   def fetch_by(params) do
     fetch_by(Customer, params)
   end

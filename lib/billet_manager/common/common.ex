@@ -1,6 +1,11 @@
 defmodule BilletManager.Common do
+  @moduledoc """
+  Module with helper functions to be used in other 
+  contexts
+  """
+
   @doc """
-  Converte os erros de um `Ecto.Changeset` para um mapa mais reconhecível.
+  Converts the Ecto.Changeset errors to an more legible map
   """
   @spec traverse_changeset_errors(Ecto.Changeset.t()) :: map
   def traverse_changeset_errors(changeset) do

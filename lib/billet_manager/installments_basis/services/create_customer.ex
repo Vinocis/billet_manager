@@ -11,8 +11,8 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomer do
   @type changeset :: Ecto.Changeset.t()
 
   @doc """
-  Create a customer. If the customer doesn't 
-  exists, return an error.
+  Create a customer. If the customer wasn't
+  created returns an error.
   """
   @spec process(map) :: {:ok, customer} | {:error, changeset}
   def process(params) do
