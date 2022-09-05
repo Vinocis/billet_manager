@@ -29,7 +29,7 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.Customer do
   Update a customer
   """
   @impl true
-  def update(attrs, customer) do
+  def update(customer, attrs) do
     customer
     |> Customer.changeset(attrs)
     |> Repo.update()

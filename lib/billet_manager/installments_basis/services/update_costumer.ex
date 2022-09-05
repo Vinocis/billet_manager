@@ -17,9 +17,7 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomer do
   @spec process(map) :: {:ok, customer} | {:error, :not_found | changeset}
   def process(%{cpf: cpf} = params) do
     with {:ok, customer} <- CustomerRepo.fetch_by(cpf: cpf) do
-      params
-      |> Map.delete(:cpf)
-      |> CustomerRepo.update(customer)
+      CustomerRepo.update(customer, params)
     end
   end
 end
