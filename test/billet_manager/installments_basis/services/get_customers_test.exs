@@ -2,20 +2,14 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomersTest do
   use BilletManager.DataCase
 
   alias BilletManager.InstallmentsBasis.Services.GetCustomers
-  alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
 
   describe "Get service:" do
     test "list all customers" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      insert(:customer, name: "Jhon", cpf: "907.109.000-07")
+      insert(:customer, name: "Tom", cpf: "111.444.777-35")
 
-      CustomerRepo.insert(attrs)
-
-      assert {:ok, [customer]} = GetCustomers.process()
-      assert customer.cpf == attrs.cpf
-      assert customer.name == attrs.name
+      refute {:ok, []} == GetCustomers.process()
+      assert {:ok, [_customer1, _customer2]} = GetCustomers.process()
     end
   end
 end

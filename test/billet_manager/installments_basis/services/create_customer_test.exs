@@ -5,10 +5,7 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomerTest do
 
   describe "Create service:" do
     test "with valid params, create a customer" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      attrs = params_for(:customer)
 
       assert {:ok, customer} = CreateCustomer.process(attrs)
       assert customer.cpf == attrs.cpf
@@ -16,9 +13,10 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomerTest do
     end
 
     test "fails to insert if an obligatory field is missing" do
-      attrs = %{
-        name: "Jhon Doe"
-      }
+      attrs =
+        :customer
+        |> params_for()
+        |> Map.delete(:cpf)
 
       assert {:error, changeset} = CreateCustomer.process(attrs)
       refute changeset.valid?

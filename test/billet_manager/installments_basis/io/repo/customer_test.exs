@@ -5,20 +5,18 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.CustomerTest do
 
   describe "insert/1" do
     test "with valid params" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      attrs = params_for(:customer)
 
       assert {:ok, customer} = Customer.insert(attrs)
-      assert customer.cpf == attrs.cpf
-      assert customer.name == attrs.name
+      assert customer.cpf == "111.444.777-35"
+      assert customer.name == "Jhon Doe"
     end
 
     test "fails to insert if an obligatory field is missing" do
-      attrs = %{
-        name: "Jhon Doe"
-      }
+      attrs =
+        :customer
+        |> params_for()
+        |> Map.delete(:cpf)
 
       assert {:error, changeset} = Customer.insert(attrs)
       refute changeset.valid?
@@ -27,47 +25,31 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.CustomerTest do
 
   describe "update/2" do
     test "with valid params" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      customer = insert(:customer)
 
       attrs_for_update = %{name: "Tom"}
 
-      {:ok, customer} = Customer.insert(attrs)
-
-      assert {:ok, updated_customer} = Customer.update(attrs_for_update, customer)
+      assert {:ok, updated_customer} = Customer.update(customer, attrs_for_update)
       assert updated_customer.name == "Tom"
-      refute updated_customer.name == customer.name
+      refute updated_customer.name == "Jhon Doe"
     end
 
     test "fails with invalid params" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      customer = insert(:customer)
 
       attrs_for_update = %{name: :Tom}
 
-      {:ok, customer} = Customer.insert(attrs)
-
-      assert {:error, changeset} = Customer.update(attrs_for_update, customer)
+      assert {:error, changeset} = Customer.update(customer, attrs_for_update)
       refute changeset.valid?
     end
   end
 
   describe "all/0" do
     test "list all customers" do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Jhon Doe"
-      }
+      insert(:customer, name: "Jhon", cpf: "907.109.000-07")
+      insert(:customer, name: "Tom", cpf: "111.444.777-35")
 
-      Customer.insert(attrs)
-
-      assert [customer] = Customer.all()
-      assert customer.cpf == attrs.cpf
-      assert customer.name == attrs.name
+      refute [] == Customer.all()
     end
   end
 end
