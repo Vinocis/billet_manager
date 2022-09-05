@@ -1,4 +1,6 @@
 defmodule BilletManagerWeb.PublicSchema do
+  @moduledoc false
+
   use Absinthe.Schema
 
   alias BilletManagerWeb.Middleware.ErrorHandler

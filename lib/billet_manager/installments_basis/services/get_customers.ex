@@ -11,10 +11,10 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   @type changeset :: Ecto.Changeset.t()
 
   @doc """
-  Returns a list customers
+  Returns a list of customers
   """
-  @spec process() :: {:ok, customer} | {:error, changeset}
-  def process() do
+  @spec process :: {:ok, customer} | {:error, changeset}
+  def process do
     {:ok, CustomerRepo.all()}
   end
 end

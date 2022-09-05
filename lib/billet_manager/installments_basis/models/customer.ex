@@ -30,12 +30,10 @@ defmodule BilletManager.InstallmentsBasis.Models.Customer do
   end
 
   defp validate_cpf(%{changes: %{cpf: cpf}} = changeset) do
-    cond do
-      Brcpfcnpj.cpf_valid?(cpf) ->
-        changeset
-
-      true ->
-        add_error(changeset, :cpf, "invalid cpf")
+    if Brcpfcnpj.cpf_valid?(cpf) do
+      changeset
+    else
+      add_error(changeset, :cpf, "invalid cpf")
     end
   end
 
