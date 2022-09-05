@@ -23,6 +23,7 @@ defmodule BilletManagerWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import BilletManagerWeb.ConnCase
+      import BilletManager.Factory
 
       alias BilletManagerWeb.Router.Helpers, as: Routes
 
