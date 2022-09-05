@@ -9,9 +9,14 @@ defmodule BilletManagerWeb.Router do
     scope "/api/v1" do
       pipe_through :api
 
-      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BilletManagerWeb.Schema
-      forward "/", Absinthe.Plug, schema: BilletManagerWeb.PublicSchema
+      forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BilletManagerWeb.PublicSchema
     end
+  end
+
+  scope "/api/v1" do
+    pipe_through :api
+
+    forward "/", Absinthe.Plug, schema: BilletManagerWeb.PublicSchema
   end
 
   # Enables LiveDashboard only for development

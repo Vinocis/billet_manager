@@ -9,8 +9,6 @@ defmodule BilletManager do
       use Ecto.Schema
 
       import Ecto.Changeset
-
-      @self __MODULE__
     end
   end
 

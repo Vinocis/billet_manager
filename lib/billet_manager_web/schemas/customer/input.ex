@@ -3,13 +3,20 @@ defmodule BilletManagerWeb.Schemas.Customer.Input do
 
   use Absinthe.Schema.Notation
 
-  input_object :customer_input do
-    description("Fields to create and update a customer")
+  input_object :create_customer_input do
+    description("Fields to create a customer")
 
-    @desc "Customer name"
+    @desc "Name"
     field :name, non_null(:string)
 
-    @desc "Customer CPF"
+    @desc "CPF"
     field :cpf, non_null(:string)
+  end
+
+  input_object :update_customer_input do
+    description("Fields to update a customer")
+
+    @desc "Name"
+    field :name, non_null(:string)
   end
 end

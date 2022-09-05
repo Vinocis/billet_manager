@@ -8,9 +8,9 @@ defmodule BilletManagerWeb.Schemas.Customer.Mutation do
   import_types(BilletManagerWeb.Schemas.Customer.Input)
 
   object :create_customer_mutation do
-    @desc "Create a new entry on customer"
+    @desc "Creates a new customer"
     field :create_customer, type: :customer do
-      arg(:input, non_null(:customer_input))
+      arg(:input, non_null(:create_customer_input))
       resolve(&Resolver.create_customer/3)
     end
   end
@@ -18,7 +18,8 @@ defmodule BilletManagerWeb.Schemas.Customer.Mutation do
   object :update_customer_mutation do
     @desc "Updates a customer"
     field :update_customer, type: :customer do
-      arg(:input, non_null(:customer_input))
+      arg(:input, non_null(:update_customer_input))
+      arg(:cpf, non_null(:string))
       resolve(&Resolver.update_customer/3)
     end
   end

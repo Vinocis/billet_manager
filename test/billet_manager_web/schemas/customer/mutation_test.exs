@@ -1,15 +1,13 @@
 defmodule BilletManagerWeb.Schemas.Customer.MutationTest do
   use BilletManagerWeb.ConnCase
 
-  alias BilletManager.InstallmentsBasis.Services.CreateCustomer
-
   @variables %{
     cpf: "111.444.777-35",
     name: "Jhon Doe"
   }
 
   @create_customer_mutation """
-  mutation($input: CustomerInput!){
+  mutation($input: CreateCustomerInput!){
     createCustomer(input: $input){
       cpf
       name
@@ -18,9 +16,8 @@ defmodule BilletManagerWeb.Schemas.Customer.MutationTest do
   """
 
   @update_customer_mutation """
-  mutation($input: CustomerInput!){
-    updateCustomer(input: $input){
-      cpf
+  mutation($input: UpdateCustomerInput!, $cpf: String!){
+    updateCustomer(input: $input, cpf: $cpf){
       name
     }
   }
@@ -63,29 +60,23 @@ defmodule BilletManagerWeb.Schemas.Customer.MutationTest do
 
   describe "Mutation: update customer" do
     test "with valid input", %{conn: conn} do
-      attrs = %{
-        cpf: "111.444.777-35",
-        name: "Tom"
-      }
-
-      CreateCustomer.process(@variables)
+      insert(:customer)
 
       response =
         post(conn, "/api/v1", %{
           "query" => @update_customer_mutation,
-          "variables" => %{input: attrs}
+          "variables" => %{input: %{name: "Tom"}, cpf: "111.444.777-35"}
         })
 
       assert data = json_response(response, 200)["data"]["updateCustomer"]
-      assert data["cpf"] == @variables.cpf
-      assert data["name"] == attrs.name
+      assert data["name"] == "Tom"
     end
 
     test "fails if customer doesn't exists", %{conn: conn} do
       response =
         post(conn, "/api/v1", %{
           "query" => @update_customer_mutation,
-          "variables" => %{input: @variables}
+          "variables" => %{input: %{name: "Tom"}, cpf: "111.444.777-35"}
         })
 
       assert errors = json_response(response, 200)["errors"]

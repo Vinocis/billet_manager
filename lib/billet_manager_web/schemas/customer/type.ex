@@ -1,12 +1,14 @@
 defmodule BilletManagerWeb.Schemas.Customer.Type do
+  @moduledoc false
+
   use Absinthe.Schema.Notation
 
   @desc "Customer"
   object :customer do
-    @desc "Customer name"
+    @desc "Name"
     field :name, :string
 
-    @desc "Customer CPF"
+    @desc "CPF"
     field :cpf, :string
   end
 end
