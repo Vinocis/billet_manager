@@ -47,7 +47,9 @@ defmodule BilletManager.MixProject do
       {:brcpfcnpj, "~> 1.0.0"},
       {:money, "~> 1.9"},
       {:absinthe, "~> 1.5"},
-      {:absinthe_plug, "~> 1.5"}
+      {:absinthe_plug, "~> 1.5"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 
