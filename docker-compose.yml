@@ -53,7 +53,7 @@ services:
         max-file: "10"
 
 networks:
-  solfacil:
+  billet_manager:
     name: billet_manager
 
 volumes:
