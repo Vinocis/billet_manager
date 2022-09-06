@@ -28,6 +28,11 @@ FROM alpine:3.12 AS production
 RUN apk upgrade --no-cache && \
   apk add ncurses-libs curl libgcc libstdc++
 
+# setup app
+WORKDIR /app
+ARG MIX_ENV=prod
+COPY --from=build /app/_build/$MIX_ENV/rel/billet_manager ./
+
 # start application
 COPY start.sh ./
 CMD ["sh", "./start.sh"]
