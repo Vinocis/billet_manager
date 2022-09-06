@@ -102,7 +102,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Code consistency
-        run: docker run -e MIX_ENV=test --name cobranca cobranca:latest mix credo --strict
+        run: docker run -e MIX_ENV=test --name billet_manager billet_manager:latest mix credo --strict
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -134,7 +134,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Unit tests
-        run: docker run -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix coveralls.post --include unit --token ${{ secrets.COVERALLS_TOKEN }} --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
+        run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only unit --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
 
   integration-tests:
       runs-on: ubuntu-latest
