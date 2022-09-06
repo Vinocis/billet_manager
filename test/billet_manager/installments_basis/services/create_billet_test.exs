@@ -3,6 +3,8 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBilletTest do
 
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
 
+  @moduletag :integration
+
   describe "Create service:" do
     test "with valid params, create a billet" do
       customer = insert(:customer)

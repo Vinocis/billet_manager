@@ -51,5 +51,5 @@ defmodule BilletManager.Repo do
 
   def normalize_fetch_error(Billet), do: "Billet not found"
   def normalize_fetch_error(Customer), do: "Customer not found"
-  def normalize_fetch_error(source), do: "Not found"
+  def normalize_fetch_error(_source), do: "Not found"
 end

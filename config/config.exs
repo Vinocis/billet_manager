@@ -10,6 +10,11 @@ import Config
 config :billet_manager,
   ecto_repos: [BilletManager.Repo]
 
+config :billet_manager, BilletManager.Repo,
+  username: "postgres",
+  password: "postgres",
+  hostname: "db"
+
 # Configures the endpoint
 config :billet_manager, BilletManagerWeb.Endpoint,
   url: [host: "localhost"],

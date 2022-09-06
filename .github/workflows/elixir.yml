@@ -14,9 +14,6 @@ jobs:
 
       - uses: actions/checkout@v2
 
-      - name: Create env file
-        run: cp .env-sample .env
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -24,14 +21,9 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: Solfacil
-          password: ${{ secrets.ACCESS_TOKEN }}
+          username: Vinocis
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setting up SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: |
-            ${{ secrets.MACHINE_USER_SSH_KEY }}
       - name: Build image
         uses: docker/build-push-action@v2
         with:
@@ -39,28 +31,20 @@ jobs:
           context: .
           target: build
           file: ./Dockerfile
-          tags: cobranca:latest
-          build-args: |
-            MIX_ENV=test
-            OBAN_PRO_LICENSE_KEY=${{ secrets.OBAN_PRO_LICENSE_KEY }}
-            OBAN_PRO_KEY_FINGERPRINT=${{ secrets.OBAN_PRO_KEY_FINGERPRINT }}
-          cache-from: type=registry,ref=ghcr.io/solfacil/cobranca/main-cache:latest
+          tags: billet_manager:latest
+          cache-from: type=registry,ref=ghcr.io/Vinocis/billet_manager/main-cache:latest
           outputs: type=docker,dest=/tmp/image.tar
-          ssh: |
-            default=${{ env.SSH_AUTH_SOCK }}
       - name: Upload artifact (app)
         uses: actions/upload-artifact@v2
         with:
           name: app
           path: /tmp/image.tar
 
-      - name: Upload artifact (compose+env)
+      - name: Upload artifact (compose)
         uses: actions/upload-artifact@v2
         with:
           name: compose
-          path: |
-            docker-compose.yml
-            .env
+          path: docker-compose.yml
   format:
     runs-on: ubuntu-latest
     needs: build
@@ -85,7 +69,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Code format
-        run: docker run -e MIX_ENV=test --name cobranca cobranca:latest mix format --check-formatted
+        run: docker run -e MIX_ENV=test --name billet_manager billet_manager:latest mix format --check-formatted
 
   consistency:
     runs-on: ubuntu-latest
@@ -111,7 +95,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Code consistency
-        run: docker run -e MIX_ENV=test --name cobranca cobranca:latest mix credo --strict
+        run: docker run -e MIX_ENV=test --name billet_manager billet_manager:latest mix credo --strict
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -143,7 +127,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Unit tests
-        run: docker run -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix coveralls.post --include unit --token ${{ secrets.COVERALLS_TOKEN }} --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
+        run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only unit
 
   integration-tests:
       runs-on: ubuntu-latest
@@ -175,7 +159,7 @@ jobs:
           run: docker load --input /tmp/image.tar
 
         - name: Integration tests
-          run: docker run -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix coveralls.post --include integration --token ${{ secrets.COVERALLS_TOKEN }} --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
+          run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only integration
 
   migrations-rollback:
       runs-on: ubuntu-latest
@@ -208,6 +192,6 @@ jobs:
 
         - name: Migrations rollback test
           run: |
-            docker run --rm -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix ecto.setup
-            docker run --rm -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix ecto.rollback --all
-            docker run --rm -e MIX_ENV=test --name cobranca --network solfacil cobranca:latest mix ecto.migrate
+            docker run --rm -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix ecto.setup
+            docker run --rm -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix ecto.rollback --all
+            docker run --rm -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix ecto.migrate
