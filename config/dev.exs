@@ -4,7 +4,7 @@ import Config
 config :billet_manager, BilletManager.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
+  hostname: "billet_manager_db",
   database: "billet_manager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
