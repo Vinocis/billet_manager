@@ -1,0 +1,61 @@
+version: "3.8"
+
+services:
+  cobranca:
+    stdin_open: true
+    tty: true
+    image: billet_manager
+    container_name: billet_manager
+    command: iex -S mix phx.server
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    volumes:
+      - .:/app
+      - billet_manager_build:/app/_build/
+      - billet_manager_deps:/app/deps
+    depends_on:
+      - db
+    networks:
+      - billet_manager
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
+
+  db:
+    image: postgres:13.5
+    container_name: billet_manager_db
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: billet_manager_dev
+    ports:
+      - "5432:5432"
+    restart: always
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - billet_manager
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
+
+networks:
+  solfacil:
+    name: billet_manager
+
+volumes:
+  billet_manager_build:
+  billet_manager_deps:
