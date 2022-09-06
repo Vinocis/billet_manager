@@ -19,11 +19,6 @@ services:
       - db
     networks:
       - billet_manager
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
 
   db:
     image: postgres:13.5
@@ -46,15 +41,9 @@ services:
       retries: 3
     networks:
       - billet_manager
-    logging:
-      driver: json-file
-      options:
-        max-size: "50m"
-        max-file: "10"
 
 networks:
   billet_manager:
-    name: billet_manager
 
 volumes:
   billet_manager_build:
