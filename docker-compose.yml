@@ -19,6 +19,7 @@ services:
       - db
     networks:
       - billet_manager
+    network_mode: "host"
     logging:
       driver: json-file
       options:
