@@ -13,7 +13,7 @@ config :billet_manager,
 config :billet_manager, BilletManager.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "db",
+  hostname: "db"
 
 # Configures the endpoint
 config :billet_manager, BilletManagerWeb.Endpoint,
