@@ -2,9 +2,6 @@ import Config
 
 # Configure your database
 config :billet_manager, BilletManager.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "db",
   database: "billet_manager_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
