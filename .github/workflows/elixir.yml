@@ -34,8 +34,6 @@ jobs:
           tags: billet_manager:latest
           cache-from: type=registry,ref=ghcr.io/Vinocis/billet_manager/main-cache:latest
           outputs: type=docker,dest=/tmp/image.tar
-          ssh: |
-            default=${{ env.SSH_AUTH_SOCK }}
       - name: Upload artifact (app)
         uses: actions/upload-artifact@v2
         with:
