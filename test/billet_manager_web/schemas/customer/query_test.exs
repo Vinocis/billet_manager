@@ -3,6 +3,8 @@ defmodule BilletManagerWeb.Schemas.Customer.QueryTest do
 
   alias BilletManager.InstallmentsBasis.Services.CreateCustomer
 
+  @moduletag :integration
+
   @query """
   query{
     customers{

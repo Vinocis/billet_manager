@@ -1,6 +1,8 @@
 defmodule BilletManagerWeb.Schemas.Billet.MutationTest do
   use BilletManagerWeb.ConnCase
 
+  @moduletag :integration
+
   @input params_for(
            :billet,
            expire_on: "2023-09-02",

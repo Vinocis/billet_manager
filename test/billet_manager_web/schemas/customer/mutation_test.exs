@@ -1,6 +1,8 @@
 defmodule BilletManagerWeb.Schemas.Customer.MutationTest do
   use BilletManagerWeb.ConnCase
 
+  @moduletag :integration
+
   @variables %{
     cpf: "111.444.777-35",
     name: "Jhon Doe"

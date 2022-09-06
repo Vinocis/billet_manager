@@ -3,6 +3,8 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomersTest do
 
   alias BilletManager.InstallmentsBasis.Services.GetCustomers
 
+  @moduletag :integration
+
   describe "Get service:" do
     test "list all customers" do
       insert(:customer, name: "Jhon", cpf: "907.109.000-07")

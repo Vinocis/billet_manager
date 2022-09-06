@@ -3,6 +3,8 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.BilletTest do
 
   alias BilletManager.InstallmentsBasis.IO.Repo.Billet
 
+  @moduletag :integration
+
   describe "insert/1" do
     test "with valid params" do
       customer = insert(:customer)

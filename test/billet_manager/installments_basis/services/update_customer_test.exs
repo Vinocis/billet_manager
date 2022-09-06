@@ -3,6 +3,8 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomerTest do
 
   alias BilletManager.InstallmentsBasis.Services.UpdateCustomer
 
+  @moduletag :integration
+
   describe "Update service:" do
     test "with valid params, update a customer" do
       insert(:customer)
