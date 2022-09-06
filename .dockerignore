@@ -12,3 +12,6 @@
 /.nix-hex/
 /.direnv/
 /.postgres/
+
+# local config
+/config/local.secret.exs
