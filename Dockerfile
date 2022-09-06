@@ -1,6 +1,8 @@
 FROM bitwalker/alpine-elixir:1.13.4 AS build
 LABEL maintainer="email@smaple.com"
 
+RUN apk update && apk add --no-cache ncurses-libs postgresql-client build-base openssh-client
+
 RUN mkdir /root/.ssh
 
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
