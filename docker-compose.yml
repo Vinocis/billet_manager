@@ -44,6 +44,7 @@ services:
 
 networks:
   billet_manager:
+    name: "billet_manager"
 
 volumes:
   billet_manager_build:
