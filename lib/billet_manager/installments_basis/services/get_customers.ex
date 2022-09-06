@@ -13,7 +13,7 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   @doc """
   Returns a list of customers
   """
-  @spec process :: {:ok, customer} | {:error, changeset}
+  @impl true
   def process do
     {:ok, CustomerRepo.all()}
   end

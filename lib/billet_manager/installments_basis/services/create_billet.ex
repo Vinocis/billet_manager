@@ -15,7 +15,7 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBillet do
   Fetches a customer and create a bank billet. If the customer
   doesn't exists, return an error.
   """
-  @spec process(map) :: {:ok, billet} | {:error, :not_found | changeset}
+  @impl true
   def process(%{cpf: cpf} = params) do
     with {:ok, customer} <- CustomerRepo.fetch_by(cpf: cpf) do
       params

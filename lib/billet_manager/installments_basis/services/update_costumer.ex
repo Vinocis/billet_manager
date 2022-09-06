@@ -14,7 +14,7 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomer do
   Update a customer. If the customer doesn't 
   exists, return an error.
   """
-  @spec process(map) :: {:ok, customer} | {:error, :not_found | changeset}
+  @impl true
   def process(%{cpf: cpf} = params) do
     with {:ok, customer} <- CustomerRepo.fetch_by(cpf: cpf) do
       CustomerRepo.update(customer, params)

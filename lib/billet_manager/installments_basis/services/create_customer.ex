@@ -14,7 +14,7 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomer do
   Create a customer. If the customer wasn't
   created returns an error.
   """
-  @spec process(map) :: {:ok, customer} | {:error, changeset}
+  @impl true
   def process(params) do
     CustomerRepo.insert(params)
   end
