@@ -47,13 +47,11 @@ jobs:
           name: app
           path: /tmp/image.tar
 
-      - name: Upload artifact (compose+env)
+      - name: Upload artifact (compose)
         uses: actions/upload-artifact@v2
         with:
           name: compose
-          path: |
-            docker-compose.yml
-            .env
+          path: docker-compose.yml
   format:
     runs-on: ubuntu-latest
     needs: build
@@ -78,7 +76,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Code format
-        run: docker run -e MIX_ENV=test --name cobranca cobranca:latest mix format --check-formatted
+        run: docker run -e MIX_ENV=test --name billet_manager billet_manager:latest mix format --check-formatted
 
   consistency:
     runs-on: ubuntu-latest
