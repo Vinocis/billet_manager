@@ -24,11 +24,6 @@ jobs:
           username: Vinocis
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setting up SSH
-        uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: |
-            ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Build image
         uses: docker/build-push-action@v2
         with:
@@ -134,7 +129,7 @@ jobs:
         run: docker load --input /tmp/image.tar
 
       - name: Unit tests
-        run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only unit --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
+        run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only unit
 
   integration-tests:
       runs-on: ubuntu-latest
@@ -166,7 +161,7 @@ jobs:
           run: docker load --input /tmp/image.tar
 
         - name: Integration tests
-          run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only integration --branch ${GITHUB_REF#refs/heads/} --name "GitHub Actions" --committer $GITHUB_ACTOR --message "${{ github.event.head_commit.message }}" --sha $GITHUB_SHA
+          run: docker run -e MIX_ENV=test --name billet_manager --network billet_manager billet_manager:latest mix test --only integration
 
   migrations-rollback:
       runs-on: ubuntu-latest

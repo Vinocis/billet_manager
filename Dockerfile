@@ -1,11 +1,7 @@
 FROM bitwalker/alpine-elixir:1.13.4 AS build
 LABEL maintainer="email@smaple.com"
 
-RUN apk update && apk add --no-cache ncurses-libs postgresql-client build-base openssh-client
-
-RUN mkdir /root/.ssh
-
-RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+RUN apk update && apk add --no-cache ncurses-libs postgresql-client build-base
 
 WORKDIR /app
 
@@ -16,7 +12,7 @@ RUN mix do local.hex --force, local.rebar --force
 COPY mix.exs mix.lock ./
 COPY config config
 
-RUN --mount=type=ssh mix do deps.get, deps.compile
+RUN mix do deps.get, deps.compile
 
 COPY . ./
 RUN mix do compile --warnings-as-errors, release
