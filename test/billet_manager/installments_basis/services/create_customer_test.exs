@@ -21,6 +21,7 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomerTest do
         |> Map.delete(:cpf)
 
       assert {:error, changeset} = CreateCustomer.process(attrs)
+      assert "can't be blank" in errors_on(changeset).cpf
       refute changeset.valid?
     end
   end

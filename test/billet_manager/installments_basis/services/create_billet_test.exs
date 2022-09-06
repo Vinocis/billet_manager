@@ -12,7 +12,7 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBilletTest do
       attrs =
         :billet
         |> params_for(customer_id: customer.id)
-        |> Map.put(:cpf, customer.cpf)
+        |> Map.put(:cpf, "111.444.777-35")
 
       assert {:ok, billet} = CreateBillet.process(attrs)
       assert billet.code == "code123"
@@ -22,20 +22,22 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBilletTest do
     end
 
     test "fails to insert if an obligatory field is missing" do
-      insert(:customer)
+      customer = insert(:customer)
 
       attrs =
-        :customer
-        |> params_for()
+        :billet
+        |> params_for(customer_id: customer.id)
+        |> Map.put(:cpf, "111.444.777-35")
         |> Map.delete(:code)
 
       assert {:error, changeset} = CreateBillet.process(attrs)
+      assert "can't be blank" in errors_on(changeset).code
       refute changeset.valid?
     end
 
     test "fails to insert if customer doesn't exists" do
       attrs =
-        :customer
+        :billet
         |> params_for()
         |> Map.put(:cpf, "111.444.777-35")
 

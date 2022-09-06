@@ -19,11 +19,13 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.BilletTest do
 
     test "fails to insert if an obligatory field is missing" do
       attrs =
-        :customer
+        :billet
         |> params_for()
         |> Map.delete(:code)
 
       assert {:error, changeset} = Billet.insert(attrs)
+      assert "can't be blank" in errors_on(changeset).code
+      assert "can't be blank" in errors_on(changeset).customer_id
       refute changeset.valid?
     end
   end

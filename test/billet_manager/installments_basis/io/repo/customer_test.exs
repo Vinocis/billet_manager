@@ -21,6 +21,7 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.CustomerTest do
         |> Map.delete(:cpf)
 
       assert {:error, changeset} = Customer.insert(attrs)
+      assert "can't be blank" in errors_on(changeset).cpf
       refute changeset.valid?
     end
   end
@@ -42,6 +43,7 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.CustomerTest do
       attrs_for_update = %{name: :Tom}
 
       assert {:error, changeset} = Customer.update(customer, attrs_for_update)
+      assert "is invalid" in errors_on(changeset).name
       refute changeset.valid?
     end
   end

@@ -35,6 +35,7 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomerTest do
       attrs_for_update = params_for(:customer, name: :Tom)
 
       assert {:error, changeset} = UpdateCustomer.process(attrs_for_update)
+      assert "is invalid" in errors_on(changeset).name
       refute changeset.valid?
     end
   end
