@@ -1,7 +1,9 @@
-defmodule BilletManager.Billets.Models.Customer do
-  use Ecto.Schema
+defmodule BilletManager.InstallmentsBasis.Models.Customer do
+  @moduledoc false
 
-  alias BilletManager.Billets.Models.Billet
+  use BilletManager, :model
+
+  alias BilletManager.InstallmentsBasis.Models.Billet
 
   import Ecto.Changeset
 
@@ -27,13 +29,13 @@ defmodule BilletManager.Billets.Models.Customer do
     |> unique_constraint(:cpf)
   end
 
-  defp validate_cpf(changeset) do
-    cpf = get_change(changeset, :cpf)
-
+  defp validate_cpf(%{changes: %{cpf: cpf}} = changeset) do
     if Brcpfcnpj.cpf_valid?(cpf) do
       changeset
     else
       add_error(changeset, :cpf, "invalid cpf")
     end
   end
+
+  defp validate_cpf(changeset), do: changeset
 end

@@ -6,7 +6,7 @@ defmodule BilletManager.Repo.Migrations.CreateBilletsTable do
       add :code, :string, null: false
       add :value, :integer, null: false
       add :status, :string, null: false
-      add :expire_on, :date, null: false
+      add :expire_on, :naive_datetime, null: false
 
       add :customer_id, references(:customers), null: false
 

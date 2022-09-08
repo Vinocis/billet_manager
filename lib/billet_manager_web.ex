@@ -17,12 +17,19 @@ defmodule BilletManagerWeb do
   and import those modules here.
   """
 
+  alias BilletManagerWeb.BaseView
+
+  import Phoenix.Controller, only: [put_view: 2, render: 3]
+  import Plug.Conn, only: [put_status: 2]
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: BilletManagerWeb
 
       import Plug.Conn
       import BilletManagerWeb.Gettext
+      import BilletManagerWeb, only: [render_response: 2]
+
       alias BilletManagerWeb.Router.Helpers, as: Routes
     end
   end
@@ -67,6 +74,16 @@ defmodule BilletManagerWeb do
       import BilletManagerWeb.Gettext
       alias BilletManagerWeb.Router.Helpers, as: Routes
     end
+  end
+
+  def render_response(nil, _conn), do: nil
+
+  @spec render_response(map | list, Plug.Conn.t()) :: Plug.Conn.t()
+  def render_response(data, conn) do
+    conn
+    |> put_status(:ok)
+    |> put_view(BaseView)
+    |> render("response.json", data: data)
   end
 
   @doc """
