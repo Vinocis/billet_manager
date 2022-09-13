@@ -8,18 +8,14 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBillet do
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
   alias BilletManager.InstallmentsBasis.Models.Billet
 
-  @type billet :: Billet.t()
-  @type changeset :: Ecto.Changeset.t()
-
   @doc """
   Fetches a customer and create a bank billet. If the customer
   doesn't exists, return an error.
   """
   @impl true
-  def process(%{cpf: cpf} = params) do
+  def process(%{cpf: cpf, input: attrs}) do
     with {:ok, customer} <- CustomerRepo.fetch_by(cpf: cpf) do
-      params
-      |> Map.delete(:cpf)
+      attrs
       |> Map.put(:customer_id, customer.id)
       |> BilletRepo.insert()
     end

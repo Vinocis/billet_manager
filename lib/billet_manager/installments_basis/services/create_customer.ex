@@ -7,9 +7,6 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateCustomer do
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
   alias BilletManager.InstallmentsBasis.Models.Customer
 
-  @type customer :: Customer.t()
-  @type changeset :: Ecto.Changeset.t()
-
   @doc """
   Create a customer. If the customer wasn't
   created returns an error.

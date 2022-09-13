@@ -7,9 +7,6 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
   alias BilletManager.InstallmentsBasis.Models.Customer
 
-  @type customer :: Customer.t()
-  @type changeset :: Ecto.Changeset.t()
-
   @doc """
   Returns a list of customers
   """

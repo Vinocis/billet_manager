@@ -7,9 +7,6 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomer do
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
   alias BilletManager.InstallmentsBasis.Models.Customer
 
-  @type customer :: Customer.t()
-  @type changeset :: Ecto.Changeset.t()
-
   @doc """
   Update a customer. If the customer doesn't 
   exists, return an error.
