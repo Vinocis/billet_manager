@@ -3,6 +3,8 @@ defmodule BilletManagerWeb.Schemas.Customer.Type do
 
   use Absinthe.Schema.Notation
 
+  alias BilletManagerWeb.Schemas.Billet.Resolver
+
   @desc "Customer"
   object :customer do
     @desc "Name"
@@ -10,5 +12,10 @@ defmodule BilletManagerWeb.Schemas.Customer.Type do
 
     @desc "CPF"
     field :cpf, :string
+
+    @desc "Bank billets"
+    field :billets, list_of(:billet) do
+      resolve(&Resolver.get_billets/3)
+    end
   end
 end

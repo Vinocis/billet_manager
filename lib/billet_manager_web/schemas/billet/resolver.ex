@@ -3,18 +3,27 @@ defmodule BilletManagerWeb.Schemas.Billet.Resolver do
 
   alias BilletManager.InstallmentsBasis.Models.Billet
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
+  alias BilletManager.InstallmentsBasis.Services.GetBillets
 
-  @type changeset :: Ecto.Changeset.t()
-  @type billet :: Billet.t()
-
-  def create_billet(_parent, %{cpf: cpf, input: input}, _context) do
-    with params <- Map.put(input, :cpf, cpf),
-         {:ok, billet} <- CreateBillet.process(params) do
+  def create_billet(_parent, %{cpf: _cpf, input: _input} = params, _context) do
+    with {:ok, billet} <- CreateBillet.process(params) do
       {:ok, transform(billet)}
     end
   end
 
-  defp transform(billet) do
+  def get_billets(parent, _params, _context) do
+    with {:ok, billets} <- GetBillets.process(parent) do
+      {:ok, transform(billets)}
+    end
+  end
+
+  defp transform([]), do: []
+
+  defp transform([%{} | _rest] = billets) do
+    Enum.map(billets, &%{&1 | value: &1.value.amount})
+  end
+
+  defp transform(%Billet{} = billet) do
     Map.update!(billet, :value, &Map.get(&1, :amount))
   end
 end
