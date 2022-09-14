@@ -12,9 +12,9 @@ defmodule BilletManager.InstallmentsBasis.Services.UpdateCustomer do
   exists, return an error.
   """
   @impl true
-  def process(%{cpf: cpf} = params) do
+  def process(%{cpf: cpf, input: attrs}) do
     with {:ok, customer} <- CustomerRepo.fetch_by(cpf: cpf) do
-      CustomerRepo.update(customer, params)
+      CustomerRepo.update(customer, attrs)
     end
   end
 end
