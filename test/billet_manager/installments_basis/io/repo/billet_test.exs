@@ -29,4 +29,31 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.BilletTest do
       refute changeset.valid?
     end
   end
+
+  describe "get_billets_by_customer_id/1" do
+    test "list all billets related to the given customer id" do
+      customer = insert(:customer)
+
+      insert(:billet, code: "abc123", customer: customer)
+      insert(:billet, code: "def456", customer: customer)
+
+      assert [billet1, billet2] = Billet.get_billets_by_customer_id(customer.id)
+
+      assert billet1.code == "abc123"
+      assert billet1.expire_on == ~D[2023-09-02]
+      assert billet1.status == :opened
+      assert billet1.value == %Money{amount: 10_000, currency: :BRL}
+
+      assert billet2.code == "def456"
+      assert billet2.expire_on == ~D[2023-09-02]
+      assert billet2.status == :opened
+      assert billet2.value == %Money{amount: 10_000, currency: :BRL}
+    end
+
+    test "returns an empty list if billets doesn't exists" do
+      customer = insert(:customer)
+
+      assert [] = Billet.get_billets_by_customer_id(customer.id)
+    end
+  end
 end
