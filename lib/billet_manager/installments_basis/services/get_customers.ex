@@ -5,7 +5,6 @@ defmodule BilletManager.InstallmentsBasis.Services.GetCustomers do
   use BilletManager, :application_service
 
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
-  alias BilletManager.InstallmentsBasis.Models.Customer
 
   @doc """
   Returns a list of customers

@@ -6,7 +6,6 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBillet do
 
   alias BilletManager.InstallmentsBasis.IO.Repo.Billet, as: BilletRepo
   alias BilletManager.InstallmentsBasis.IO.Repo.Customer, as: CustomerRepo
-  alias BilletManager.InstallmentsBasis.Models.Billet
 
   @doc """
   Fetches a customer and create a bank billet. If the customer
