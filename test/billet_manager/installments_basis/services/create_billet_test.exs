@@ -7,14 +7,11 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBilletTest do
 
   describe "Create service:" do
     test "with valid params, create a billet" do
-      customer = insert(:customer)
+      insert(:customer)
 
-      attrs =
-        :billet
-        |> params_for(customer_id: customer.id)
-        |> Map.put(:cpf, "111.444.777-35")
+      attrs = params_for(:billet)
 
-      assert {:ok, billet} = CreateBillet.process(attrs)
+      assert {:ok, billet} = CreateBillet.process(%{cpf: "111.444.777-35", input: attrs})
       assert billet.code == "code123"
       assert billet.expire_on == ~D[2023-09-02]
       assert billet.status == :opened
@@ -22,26 +19,22 @@ defmodule BilletManager.InstallmentsBasis.Services.CreateBilletTest do
     end
 
     test "fails to insert if an obligatory field is missing" do
-      customer = insert(:customer)
+      insert(:customer)
 
       attrs =
         :billet
-        |> params_for(customer_id: customer.id)
-        |> Map.put(:cpf, "111.444.777-35")
+        |> params_for()
         |> Map.delete(:code)
 
-      assert {:error, changeset} = CreateBillet.process(attrs)
+      assert {:error, changeset} = CreateBillet.process(%{cpf: "111.444.777-35", input: attrs})
       assert "can't be blank" in errors_on(changeset).code
       refute changeset.valid?
     end
 
     test "fails to insert if customer doesn't exists" do
-      attrs =
-        :billet
-        |> params_for()
-        |> Map.put(:cpf, "111.444.777-35")
+      attrs = params_for(:billet)
 
-      assert {:error, reason} = CreateBillet.process(attrs)
+      assert {:error, reason} = CreateBillet.process(%{cpf: "111.444.777-35", input: attrs})
       assert reason == "Customer not found"
     end
   end
