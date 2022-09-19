@@ -7,6 +7,7 @@ defmodule BilletManagerWeb.Schemas.Billet.Type do
   enum :statuses do
     value(:opened)
     value(:paid)
+    value(:partially_paid)
     value(:expired)
   end
 
@@ -23,5 +24,8 @@ defmodule BilletManagerWeb.Schemas.Billet.Type do
 
     @desc "Value in cents"
     field :value, :integer
+
+    @desc "Already paid value in cents"
+    field :paid_value, :integer
   end
 end

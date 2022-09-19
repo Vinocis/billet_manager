@@ -25,6 +25,7 @@ defmodule BilletManagerWeb.PublicSchema do
     import_fields(:create_billet_mutation)
     import_fields(:create_customer_mutation)
     import_fields(:update_customer_mutation)
+    import_fields(:billet_payment_mutation)
   end
 
   def middleware(middleware, _field, %{identifier: type}) when type in [:query, :mutation],

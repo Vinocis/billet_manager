@@ -4,6 +4,7 @@ defmodule BilletManagerWeb.Schemas.Billet.Resolver do
   alias BilletManager.InstallmentsBasis.Models.Billet
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
   alias BilletManager.InstallmentsBasis.Services.GetBillets
+  alias BilletManager.InstallmentsBasis.Services.HandlePayments
 
   def create_billet(_parent, %{cpf: _cpf, input: _input} = params, _context) do
     with {:ok, billet} <- CreateBillet.process(params) do
@@ -17,13 +18,25 @@ defmodule BilletManagerWeb.Schemas.Billet.Resolver do
     end
   end
 
+  def handle_payments(_parent, params, _context) do
+    with {:ok, billet} <- HandlePayments.process(params) do
+      {:ok, transform(billet)}
+    end
+  end
+
   defp transform([]), do: []
 
   defp transform([%{} | _rest] = billets) do
     Enum.map(billets, &%{&1 | value: &1.value.amount})
   end
 
-  defp transform(%Billet{} = billet) do
+  defp transform(%{paid_value: nil, value: _} = billet) do
     Map.update!(billet, :value, &Map.get(&1, :amount))
+  end
+
+  defp transform(%{paid_value: _, value: _} = billet) do
+    billet
+    |> Map.update!(:value, &Map.get(&1, :amount, 0))
+    |> Map.update!(:paid_value, &Map.get(&1, :amount))
   end
 end
