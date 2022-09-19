@@ -17,4 +17,16 @@ defmodule BilletManager.Common do
       end)
     end)
   end
+
+  @doc """
+  Parse an integer value to a Money struct (in cents)
+
+  ##Example
+    iex> BilletManager.Common.parse_integer_to_money!(100)
+    %Money{amount: 100, currency: :BRL}
+  """
+  @spec parse_integer_to_money!(integer, atom) :: Money.t()
+  def parse_integer_to_money!(value, currency \\ :BRL) do
+    Money.new(value, currency)
+  end
 end
