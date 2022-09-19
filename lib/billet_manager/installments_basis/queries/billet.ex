@@ -30,7 +30,8 @@ defmodule BilletManager.InstallmentsBasis.Queries.Billet do
       code: b.code,
       expire_on: b.expire_on,
       status: b.status,
-      value: b.value
+      value: b.value,
+      paid_value: b.paid_value
     })
   end
 end

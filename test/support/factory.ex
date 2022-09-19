@@ -17,6 +17,7 @@ defmodule BilletManager.Factory do
     %Billet{
       code: "code123",
       expire_on: ~D[2023-09-02],
+      paid_value: nil,
       status: :opened,
       value: 10_000,
       customer: build(:customer)
