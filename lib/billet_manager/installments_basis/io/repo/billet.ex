@@ -18,10 +18,10 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.Billet do
     |> Repo.insert()
   end
 
-  @impl true
   @doc """
   Update a billet
   """
+  @impl true
   def update(billet, attrs) do
     billet
     |> Billet.changeset(attrs)
