@@ -1,9 +1,9 @@
 defmodule BilletManagerWeb.Schemas.Billet.Resolver do
   @moduledoc false
 
+  alias BilletManager.InstallmentsBasis.Services.ConsolidatePayment
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
   alias BilletManager.InstallmentsBasis.Services.GetBillets
-  alias BilletManager.InstallmentsBasis.Services.ConsolidatePayment
 
   def create_billet(_parent, %{cpf: _cpf, input: _input} = params, _context) do
     with {:ok, billet} <- CreateBillet.process(params) do
