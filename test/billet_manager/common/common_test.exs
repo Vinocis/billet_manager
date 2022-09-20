@@ -6,16 +6,16 @@ defmodule BilletManager.CommonTest do
   @moduletag :unit
 
   describe "parse_integer_to_money!/2" do
-    test "when just amount is passed currency is BRL" do
-      parsed_value = Common.parse_integer_to_money!(100)
+    test "when amount is passed as integer" do
+      parsed_value = Common.parse_to_money!(100)
 
-      assert %Money{amount: 100, currency: :BRL} == parsed_value
+      assert parsed_value == %Money{amount: 100, currency: :BRL}
     end
 
-    test "when amount and currency is passed" do
-      parsed_value = Common.parse_integer_to_money!(100, :USD)
+    test "when amount is string" do
+      parsed_value = Common.parse_to_money!("1.234,56")
 
-      assert %Money{amount: 100, currency: :USD} == parsed_value
+      assert parsed_value == %Money{amount: 123_456, currency: :BRL}
     end
   end
 end
