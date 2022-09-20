@@ -1,7 +1,7 @@
-defmodule BilletManager.InstallmentsBasis.Services.HandlePaymentsTest do
+defmodule BilletManager.InstallmentsBasis.Services.ConsolidatePaymentTest do
   use BilletManager.DataCase
 
-  alias BilletManager.InstallmentsBasis.Services.HandlePayments
+  alias BilletManager.InstallmentsBasis.Services.ConsolidatePayment
 
   @moduletag :integration
 
@@ -11,7 +11,7 @@ defmodule BilletManager.InstallmentsBasis.Services.HandlePaymentsTest do
 
       attrs = %{payment_value: 1000}
 
-      assert {:ok, updated_billet} = HandlePayments.process(%{code: "code123", input: attrs})
+      assert {:ok, updated_billet} = ConsolidatePayment.process(%{code: "code123", input: attrs})
       assert updated_billet.status == :partially_paid
       assert updated_billet.code == "code123"
       assert updated_billet.expire_on == ~D[2023-09-02]
@@ -24,7 +24,7 @@ defmodule BilletManager.InstallmentsBasis.Services.HandlePaymentsTest do
 
       attrs = %{payment_value: 10_000}
 
-      assert {:ok, updated_billet} = HandlePayments.process(%{code: "code123", input: attrs})
+      assert {:ok, updated_billet} = ConsolidatePayment.process(%{code: "code123", input: attrs})
       assert updated_billet.status == :paid
       assert updated_billet.code == "code123"
       assert updated_billet.expire_on == ~D[2023-09-02]
@@ -37,7 +37,7 @@ defmodule BilletManager.InstallmentsBasis.Services.HandlePaymentsTest do
 
       attrs = %{payment_value: 10_000}
 
-      assert {:error, error} = HandlePayments.process(%{code: "code123", input: attrs})
+      assert {:error, error} = ConsolidatePayment.process(%{code: "code123", input: attrs})
       assert error == "This billet can't receive more payments"
     end
   end

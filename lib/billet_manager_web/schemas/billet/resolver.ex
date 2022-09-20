@@ -3,7 +3,7 @@ defmodule BilletManagerWeb.Schemas.Billet.Resolver do
 
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
   alias BilletManager.InstallmentsBasis.Services.GetBillets
-  alias BilletManager.InstallmentsBasis.Services.HandlePayments
+  alias BilletManager.InstallmentsBasis.Services.ConsolidatePayment
 
   def create_billet(_parent, %{cpf: _cpf, input: _input} = params, _context) do
     with {:ok, billet} <- CreateBillet.process(params) do
@@ -18,7 +18,7 @@ defmodule BilletManagerWeb.Schemas.Billet.Resolver do
   end
 
   def handle_payments(_parent, params, _context) do
-    with {:ok, billet} <- HandlePayments.process(params) do
+    with {:ok, billet} <- ConsolidatePayment.process(params) do
       {:ok, transform(billet)}
     end
   end

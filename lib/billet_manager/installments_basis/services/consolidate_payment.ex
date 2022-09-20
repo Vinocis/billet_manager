@@ -1,4 +1,4 @@
-defmodule BilletManager.InstallmentsBasis.Services.HandlePayments do
+defmodule BilletManager.InstallmentsBasis.Services.ConsolidatePayment do
   @moduledoc """
   Responsible for update the billet `status` and `paid_value`
   fields depending on the paid amount
@@ -24,7 +24,7 @@ defmodule BilletManager.InstallmentsBasis.Services.HandlePayments do
   end
 
   defp maybe_put_status_on_attrs(billet, attrs) when billet.status in @can_receive_payments do
-    paid_value = Common.parse_integer_to_money!(attrs.payment_value)
+    paid_value = Common.parse_to_money!(attrs.payment_value)
 
     cond do
       Money.compare(billet.value, paid_value) > 0 ->
