@@ -1,7 +1,6 @@
 defmodule BilletManagerWeb.Schemas.Billet.Resolver do
   @moduledoc false
 
-  alias BilletManager.InstallmentsBasis.Models.Billet
   alias BilletManager.InstallmentsBasis.Services.CreateBillet
   alias BilletManager.InstallmentsBasis.Services.GetBillets
   alias BilletManager.InstallmentsBasis.Services.HandlePayments
