@@ -15,4 +15,13 @@ defmodule BilletManagerWeb.Schemas.Billet.Mutation do
       resolve(&Resolver.create_billet/3)
     end
   end
+
+  object :billet_payment_mutation do
+    @desc "Pay a billet"
+    field :billet_payment, type: :billet do
+      arg(:input, non_null(:billet_payment_input))
+      arg(:code, non_null(:string))
+      resolve(&Resolver.handle_payments/3)
+    end
+  end
 end

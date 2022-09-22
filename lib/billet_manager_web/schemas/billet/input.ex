@@ -18,4 +18,11 @@ defmodule BilletManagerWeb.Schemas.Billet.Input do
     @desc "Value in cents"
     field :value, non_null(:integer)
   end
+
+  input_object :billet_payment_input do
+    description("Fields to pay a billet")
+
+    @desc "Payment value"
+    field :payment_value, non_null(:integer)
+  end
 end

@@ -56,4 +56,18 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.CustomerTest do
       refute [] == Customer.all()
     end
   end
+
+  describe "fetch_by/1" do
+    test "when customer exists" do
+      insert(:customer)
+
+      assert {:ok, customer} = Customer.fetch_by(cpf: "111.444.777-35")
+      assert customer.cpf == "111.444.777-35"
+      assert customer.name == "Jhon Doe"
+    end
+
+    test "when billet does not exists" do
+      assert {:error, "Customer not found"} = Customer.fetch_by(cpf: "111.444.777-35")
+    end
+  end
 end

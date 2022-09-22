@@ -56,4 +56,46 @@ defmodule BilletManager.InstallmentsBasis.IO.Repo.BilletTest do
       assert [] = Billet.get_billets_by_customer_id(customer.id)
     end
   end
+
+  describe "update/2" do
+    test "with valid params" do
+      billet = insert(:billet)
+
+      attrs_for_update = %{status: :partially_paid, paid_value: 1000}
+
+      assert {:ok, updated_billet} = Billet.update(billet, attrs_for_update)
+      assert updated_billet.code == "code123"
+      assert updated_billet.expire_on == ~D[2023-09-02]
+      assert updated_billet.paid_value == %Money{amount: 1000, currency: :BRL}
+      assert updated_billet.status == :partially_paid
+      assert updated_billet.value == %Money{amount: 10_000, currency: :BRL}
+    end
+
+    test "fails with invalid params" do
+      billet = insert(:billet)
+
+      attrs_for_update = %{status: :not_paid, paid_value: nil}
+
+      assert {:error, changeset} = Billet.update(billet, attrs_for_update)
+      assert "is invalid" in errors_on(changeset).status
+      refute changeset.valid?
+    end
+  end
+
+  describe "fetch_by/1" do
+    test "when billet exists" do
+      insert(:billet)
+
+      assert {:ok, billet} = Billet.fetch_by(code: "code123")
+      assert billet.code == "code123"
+      assert billet.expire_on == ~D[2023-09-02]
+      assert billet.paid_value == nil
+      assert billet.status == :opened
+      assert billet.value == %Money{amount: 10_000, currency: :BRL}
+    end
+
+    test "when billet does not exists" do
+      assert {:error, "Billet not found"} = Billet.fetch_by(code: "code123")
+    end
+  end
 end
